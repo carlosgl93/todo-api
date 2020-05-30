@@ -5,6 +5,9 @@ const Task = ({task}) => {
 
     const {removeTask, findItem} = useContext(TaskListContext)
 
+    
+
+
     return (
         <li className='list-item'>
             <span>

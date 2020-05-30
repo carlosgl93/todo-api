@@ -1,6 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react'
 import {TaskListContext} from '../context/TaskListContext'
 
+const urlApi = 'https://assets.breatheco.de/apis/fake/todos/user/kanogl';
+
 const TaskForm = () => {
     const { addTask, clearList, editItem, editTask  } = useContext(TaskListContext);
 
@@ -16,6 +18,34 @@ const TaskForm = () => {
         if (!editItem) {
             addTask(title);
             setTitle('');
+
+            const jsonql = JSON.stringify([
+                { label: "make the bed", done: false },
+                { label: "Walk the dog", done: false },
+                { label: "Do the replits", done: false }
+            ])
+
+            console.log(jsonql)
+            fetch(urlApi, {
+                method: 'PUT',
+                body: jsonql,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw Error(response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(responseAsJson => {
+                    let result = 'task successfully added'
+                    console.log(result);
+                })
+                .catch(error => {
+                    console.log('parece que hay un error:', error);
+                })
         } else {
             editTask(title, editItem.id);
         }
